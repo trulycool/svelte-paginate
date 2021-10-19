@@ -2,7 +2,8 @@
   import {
     paginate,
     LightPaginationNav,
-    DarkPaginationNav
+    DarkPaginationNav,
+    DaisyPaginationNav
   } from '../src'
   import { fade } from 'svelte/transition'
 
@@ -38,6 +39,14 @@
     on:setPage={(e) => currentPage = e.detail.page}
   />
   <DarkPaginationNav
+    currentPage={currentPage}
+    pageSize={pageSize}
+    totalItems={items.length}
+    limit="{1}"
+    showStepOptions="{true}"
+    on:setPage={(e) => currentPage = e.detail.page}
+  />
+  <DaisyPaginationNav
     currentPage={currentPage}
     pageSize={pageSize}
     totalItems={items.length}
