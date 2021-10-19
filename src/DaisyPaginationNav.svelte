@@ -16,7 +16,7 @@
 .dark-pagination-nav :global(.pagination-nav) {
   display: flex;
   justify-content: center;
-  background: hsl(200, 80%, 5%);
+  background: rgba(13, 99, 146, 0.445);
   border-radius: 3px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
