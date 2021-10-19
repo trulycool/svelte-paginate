@@ -19,13 +19,13 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-livereload": "^1.0.4",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-svelte": "^5.1.0",
+    "rollup-plugin-svelte": "6.1.1",
     "svelte": "^3.12.1"
   },
   "scripts": {
     "autobuild": "rollup -c rollup.config.js -w",
     "dev": "run-p start:dev autobuild",
-    "start:dev": "sirv example --single --dev",
+    "start:dev": "sirv example --single --dev  --host --port 8000",
     "test": "jest"
   },
   "dependencies": {
