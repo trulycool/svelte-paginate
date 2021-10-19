@@ -17,7 +17,7 @@ export default [
 				dev: true,
 				css: css => {
 					// css.write('example/bundle.css')
-					css.write('bundle.css')
+					css.write('bundle.css') // needed for v. 6.1.1
 				}
 			}),
 			resolve({
