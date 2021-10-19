@@ -26,7 +26,9 @@
   $: totalPages = Math.ceil(totalItems / pageSize)
 
   function handleOptionClick (option) {
-    dispatch('setPage', { page: option.value })
+    dispatch('setPage', { page: option.value });
+    window && window.scrollTo({ top: 0, behavior: 'smooth' });
+    // alert("Clicked!");
   }
 </script>
 
