@@ -40,7 +40,7 @@
   padding: 10px 15px;
 }
 .dark-pagination-nav :global(.option:hover) {
-  background: #000;
+  background: rgba(243, 238, 238, 0.377);
   cursor: pointer;
 }
 .dark-pagination-nav :global(.option.active) {
