@@ -27,8 +27,8 @@
 
   function handleOptionClick (option) {
     dispatch('setPage', { page: option.value });
+    // MLX: we should scroll to the top of page when navigating
     window && window.scrollTo({ top: 0, behavior: 'smooth' });
-    // alert("Clicked!");
   }
 </script>
 
