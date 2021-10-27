@@ -28,6 +28,7 @@
   function handleOptionClick (option) {
     dispatch('setPage', { page: option.value });
     // MLX: we should scroll to the top of page when navigating
+    // seems to occasionally break on Firefox
     window && window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
