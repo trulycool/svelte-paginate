@@ -1,79 +1,81 @@
 <script>
-  import { createEventDispatcher } from 'svelte'
-  import generateNavigationOptions from './generateNavigationOptions'
-  import {
-    PREVIOUS_PAGE,
-    NEXT_PAGE,
-    ELLIPSIS
-  } from '../src/symbolTypes'
+  import { createEventDispatcher } from "svelte";
+  import generateNavigationOptions from "./generateNavigationOptions";
+  import { PREVIOUS_PAGE, NEXT_PAGE, ELLIPSIS } from "../src/symbolTypes";
 
-  const dispatch = createEventDispatcher()
+  const dispatch = createEventDispatcher();
 
-  export let totalItems = 0
-  export let pageSize = 1
-  export let currentPage = 1
-  export let limit = null
-  export let showStepOptions = false
+  export let totalItems = 0;
+  export let pageSize = 1;
+  export let currentPage = 1;
+  export let limit = null;
+  export let showStepOptions = false;
 
   $: options = generateNavigationOptions({
     totalItems,
     pageSize,
     currentPage,
     limit,
-    showStepOptions
-  })
+    showStepOptions,
+  });
 
-  $: totalPages = Math.ceil(totalItems / pageSize)
+  $: totalPages = Math.ceil(totalItems / pageSize);
 
-  function handleOptionClick (option) {
-    dispatch('setPage', { page: option.value });
-    // MLX: we should scroll to the top of page when navigating
-    // seems to occasionally break on Firefox
-    // window && window.scrollTo({ top: 0, behavior: 'smooth' }); // breakes scroll on first click in Firefox
-    window && window.scrollTo({ top: 0, left: 0 });  }
+  function handleOptionClick(option) {
+    dispatch("setPage", { page: option.value });
+
+    /* 
+    MLX: we should scroll to the top of page when navigating.
+    Breaks always on on Firefox, tho not for every content type.
+    If it breaks for Posts to go to page 2, it always breaks there
+    but might work on Projects. Works if we don't include "smooth"
+    */
+    if (window && navigator && navigator.userAgent.match(/firefox|fxios/i)) {
+      // disable smooth scroll, or ff doesn't always go to #top
+      window && window.scrollTo({ top: 0, left: 0 });
+    } else {
+      window && window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }
+  }
 </script>
 
 <div class="pagination-nav">
   {#each options as option}
     <span
       class="option"
-      class:number="{option.type === 'number'}"
-      class:prev="{option.type === 'symbol' && option.symbol === PREVIOUS_PAGE}"
-      class:next="{option.type === 'symbol' && option.symbol === NEXT_PAGE}"
-      class:disabled="{
-        (option.type === 'symbol' && option.symbol === NEXT_PAGE && currentPage >= totalPages) ||
-        (option.type === 'symbol' && option.symbol === PREVIOUS_PAGE && currentPage <= 1)
-      }"
-      class:ellipsis="{option.type === 'symbol' && option.symbol === ELLIPSIS}"
-      class:active="{option.type === 'number' && option.value === currentPage}"
-      on:click="{() => handleOptionClick(option)}"
+      class:number={option.type === "number"}
+      class:prev={option.type === "symbol" && option.symbol === PREVIOUS_PAGE}
+      class:next={option.type === "symbol" && option.symbol === NEXT_PAGE}
+      class:disabled={(option.type === "symbol" &&
+        option.symbol === NEXT_PAGE &&
+        currentPage >= totalPages) ||
+        (option.type === "symbol" &&
+          option.symbol === PREVIOUS_PAGE &&
+          currentPage <= 1)}
+      class:ellipsis={option.type === "symbol" && option.symbol === ELLIPSIS}
+      class:active={option.type === "number" && option.value === currentPage}
+      on:click={() => handleOptionClick(option)}
     >
-      {#if option.type === 'number'}
-        <slot name="number" value="{option.value}">
+      {#if option.type === "number"}
+        <slot name="number" value={option.value}>
           <span>{option.value}</span>
         </slot>
-      {:else if option.type === 'symbol' && option.symbol === ELLIPSIS}
+      {:else if option.type === "symbol" && option.symbol === ELLIPSIS}
         <slot name="ellipsis">
           <span>...</span>
         </slot>
-      {:else if option.type === 'symbol' && option.symbol === PREVIOUS_PAGE}
+      {:else if option.type === "symbol" && option.symbol === PREVIOUS_PAGE}
         <slot name="prev">
-          <svg
-            style="width:24px;height:24px"
-            viewBox="0 0 24 24"
-          >
+          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
             <path
               fill="#000000"
               d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
             />
           </svg>
         </slot>
-      {:else if option.type === 'symbol' && option.symbol === NEXT_PAGE}
+      {:else if option.type === "symbol" && option.symbol === NEXT_PAGE}
         <slot name="next">
-          <svg
-            style="width:24px;height:24px"
-            viewBox="0 0 24 24"
-          >
+          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
             <path
               fill="#000000"
               d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
